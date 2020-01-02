@@ -10,11 +10,12 @@ import chesspieces from './base/chesspiece';
 import events from './base/events';
 
 class GoBang {
-  constructor(el, num = 18) {
+  constructor(el, num = config.defaultColNum) {
     this.el = el;
     this.num = num;
     this.chessData = [];
-    if (!this.el) this.el = drawTools.createEmptyEl(config.defaultContainerName);
+    if (!utils.type.isPositiveNumber(num)) this.num = config.defaultColNum;
+    if (!this.el || !utils.type.isElement(this.el)) this.el = drawTools.createEmptyEl(config.defaultContainerName);
   }
 
   get layout() {

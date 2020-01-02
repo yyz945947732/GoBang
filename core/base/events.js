@@ -13,7 +13,7 @@ const bindMoveEvent = (el, chesspieces, callback) => {
       positionChesspiece.innerHTML = chesspiece;
       chesspieces = utils.switchEach(chesspieces);
       sideWords = utils.switchEach(sideWords);
-      if (callback && typeof callback === 'function') callback(position, sideWord);
+      if (utils.type.isFunction(callback)) callback(position, sideWord);
     }
   }
   el.addEventListener('click', move);

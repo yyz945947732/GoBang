@@ -3,9 +3,10 @@ import utils from '../utils';
 
 const bindMoveEvent = (el, chesspieces, callback) => {
   let sideWords = [config.whiteSideWord, config.blackSideWord];
+  utils.check.arrayCheck(chesspieces);
   function move(e) {
     const position = e.target.id;
-    if (position && utils.isPosition(position)) {
+    if (position && utils.type.isPosition(position)) {
       const positionChesspiece = document.getElementById(position);
       const [chesspiece] = chesspieces;
       const [sideWord] = sideWords;

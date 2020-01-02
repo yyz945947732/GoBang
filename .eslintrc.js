@@ -23,8 +23,7 @@ module.exports = {
       'consistent-return':'off',
       'no-param-reassign':'off',
       'no-console':'off',
-      'no-restricted-globals':'off',
-      'max-len':'off'
+      'no-restricted-globals':'off'
     },
   };
   

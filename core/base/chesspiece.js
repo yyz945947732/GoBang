@@ -4,7 +4,10 @@ const whiteChess = chesspiece('#f8f8f8');
 
 const blackChess = chesspiece('#000');
 
+const whiteChessAndBlackChess = [whiteChess, blackChess];
+
 export default {
   whiteChess,
   blackChess,
+  whiteChessAndBlackChess,
 };

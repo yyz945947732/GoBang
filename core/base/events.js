@@ -25,6 +25,15 @@ const moveEvent = (el, chesspieces, callback) => {
   return makeWatchAndRemove(el, 'click', move);
 };
 
+const resetEvent = (el, callback) => {
+  function reset() {
+    el.innerHTML = '';
+    if (utils.type.isFunction(callback)) callback();
+  }
+  return makeWatchAndRemove(el, 'click', reset);
+};
+
 export default {
   moveEvent,
+  resetEvent,
 };

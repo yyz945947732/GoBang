@@ -1,6 +1,26 @@
+import symbol from '../symbol';
+import utils from '../utils';
+import errors from '../errors';
+
+const mapperProxy = () => new Proxy({}, {
+  get(target, key) {
+    return target[key];
+  },
+  set(target, key, val) {
+    if (utils.hasProp(val, 'watch') && utils.hasProp(val, 'unwatch')) {
+      return Reflect.set(target, key, val);
+    }
+    errors.requireError('watch', 'unwatch');
+  },
+});
+
 class EventMap {
   constructor() {
-    this.mapper = {};
+    this.mapper = mapperProxy();
+  }
+
+  [symbol.EventMap.check](eventName) {
+    if (!this.has(eventName)) throw new Error('Event not found');
   }
 
   set(eventName, action) {
@@ -12,28 +32,24 @@ class EventMap {
   }
 
   get(eventName) {
-    this.check(eventName);
+    this[symbol.EventMap.check](eventName);
     return this.mapper[eventName];
   }
 
-  check(eventName) {
-    if (!this.has(eventName)) throw new Error('Event not found');
-  }
-
   clean() {
-    this.mapper = {};
+    this.mapper = mapperProxy();
   }
 
   watch(eventName) {
-    this.check(eventName);
+    this[symbol.EventMap.check](eventName);
     const event = this.get(eventName);
-    if (Object.prototype.hasOwnProperty.call(event, 'watch')) event.watch();
+    if (utils.hasProp(event, 'watch')) event.watch();
   }
 
   unwatch(eventName) {
-    this.check(eventName);
+    this[symbol.EventMap.check](eventName);
     const event = this.get(eventName);
-    if (Object.prototype.hasOwnProperty.call(event, 'unwatch')) event.unwatch();
+    if (utils.hasProp(event, 'unwatch')) event.unwatch();
   }
 }
 

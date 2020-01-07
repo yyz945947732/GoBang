@@ -1,4 +1,4 @@
-const create = (el) => () => document.createElement(el);
+const create = (el) => () => document.createElement(String(el));
 
 const createTable = create('table');
 
@@ -22,7 +22,7 @@ const createEmptyEl = (id) => {
 const createTip = (content, el = document.body) => {
   const tip = createSpan();
   tip.innerText = content;
-  tip.setAttribute('style', 'position:absolute;top:0;left:0;bottom:0;right:0;font-size:26px;color:#ff4400;');
+  tip.setAttribute('style', 'position:fixed;top:0;left:0;bottom:0;right:0;font-size:70px;color:#ff4400;text-align:center;height:70px;margin:auto;');
   el.appendChild(tip);
   return tip;
 };

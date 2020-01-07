@@ -1,6 +1,7 @@
 
 import config from './config';
 import utils from './utils';
+import symbol from './symbol';
 import dataMaker from './base/dataMaker';
 import layout from './base/layout';
 import cssTools from './base/css';
@@ -26,35 +27,26 @@ class GoBang {
     return this.chessData && this.chessData.map((item) => `${item.join('')}\n`).join('');
   }
 
-  initEvents() {
-    this.eventMap.set('moveEvent', events.moveEvent(
-      this.el,
-      chesspieces.whiteChessAndBlackChess,
-      this.move.bind(this),
-    ));
-  }
-
   init() {
-    this.initEvents();
-    const data = dataMaker.layoutData(this.num);
-    const statusData = dataMaker.statusData(this.num);
-    const gobangLayout = layout(data);
-    drawTools.draw(this.el, gobangLayout);
-    cssTools.appendCss(data);
+    this[symbol.GoBang.initEvents]();
+    const layoutData = dataMaker.layoutData(this.num);
+    drawTools.draw(this.el, layout(layoutData));
+    cssTools.appendCss(layoutData);
     this.eventMap.watch('moveEvent');
-    this.chessData = statusData;
+    this.eventMap.unwatch('resetEvent');
+    this.chessData = dataMaker.statusData(this.num);
   }
 
   move(position, sideWord) {
     utils.check.positionAndSideWordCheck(position, sideWord);
-    const [row, col] = position.split('-');
+    const [row, col] = position.split(config.defaultSeparator);
     this.chessData[row][col] = sideWord;
     this.check(position, sideWord);
   }
 
   check(position, sideWord) {
     utils.check.positionAndSideWordCheck(position, sideWord);
-    const [row, col] = position.split('-');
+    const [row, col] = position.split(config.defaultSeparator);
     if (checker.isWin(row, col, this.chessData, sideWord)) {
       this.end(sideWord);
     }
@@ -62,7 +54,17 @@ class GoBang {
 
   end(sideWord) {
     this.eventMap.unwatch('moveEvent');
+    this.eventMap.watch('resetEvent');
     drawTools.createTip(`${utils.getSide(sideWord)}获胜!`, this.el);
+  }
+
+  [symbol.GoBang.initEvents]() {
+    this.eventMap.set('moveEvent', events.moveEvent(
+      this.el,
+      chesspieces.whiteChessAndBlackChess,
+      this.move.bind(this),
+    ));
+    this.eventMap.set('resetEvent', events.resetEvent(this.el, this.init.bind(this)));
   }
 }
 

@@ -4,4 +4,5 @@ export default {
   whiteSideWord: 'W',
   blackSideWord: 'B',
   emptyWord: 'F',
+  defaultSeparator: '-',
 };

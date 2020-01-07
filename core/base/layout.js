@@ -1,4 +1,6 @@
-const cel = (row, col) => `<td id='${row}-${col}'></td>`;
+import config from '../config';
+
+const cel = (row, col) => `<td id='${row}${config.defaultSeparator}${col}'></td>`;
 
 const row = (cels) => `<tr>${cels}</tr>`;
 

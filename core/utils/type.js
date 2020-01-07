@@ -11,7 +11,7 @@ const isElement = (obj) => {
   return !!(obj && typeof obj === 'object' && (obj.nodeType === 1 || obj.nodeType === 9) && typeof obj.nodeName === 'string');
 };
 
-const isPosition = (position) => /\d+-\d+/.test(position);
+const isPosition = (position) => new RegExp(`\\d+${config.defaultSeparator}\\d+`).test(position);
 
 const isSideWord = (sideWord) => [config.whiteSideWord, config.blackSideWord].includes(sideWord);
 

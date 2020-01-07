@@ -1,4 +1,8 @@
-const tdWidth = (num) => Math.floor(((100 / num) * 0.01) * window.innerHeight);
+const baseSize = () => (window.innerHeight > window.innerWidth
+  ? window.innerWidth
+  : window.innerHeight);
+
+const tdWidth = (num) => Math.floor(((100 / num) * 0.01) * baseSize());
 
 const border = (direction) => `border-${direction}: 1px solid #000;`;
 

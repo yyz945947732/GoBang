@@ -1,7 +1,12 @@
 import config from '../config';
 import utils from '../utils';
 
-const bindMoveEvent = (el, chesspieces, callback) => {
+const makeWatchAndRemove = (el, type, fn) => ({
+  watch: () => el.addEventListener(String(type), utils.type.isFunction(fn) && fn),
+  unwatch: () => el.removeEventListener(String(type), utils.type.isFunction(fn) && fn),
+});
+
+const moveEvent = (el, chesspieces, callback) => {
   let sideWords = [config.whiteSideWord, config.blackSideWord];
   utils.check.arrayCheck(chesspieces);
   function move(e) {
@@ -17,9 +22,9 @@ const bindMoveEvent = (el, chesspieces, callback) => {
       if (utils.type.isFunction(callback)) callback(position, sideWord);
     }
   }
-  el.addEventListener('click', move);
+  return makeWatchAndRemove(el, 'click', move);
 };
 
 export default {
-  bindMoveEvent,
+  moveEvent,
 };
